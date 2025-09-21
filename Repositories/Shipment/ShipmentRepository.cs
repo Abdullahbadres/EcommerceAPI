@@ -22,7 +22,7 @@ public class ShipmentRepository : IShipmentRepository
     {
         return await _db.Shipments
             .Include(s => s.Order)
-            .ThenInclude(o => o.Customer)
+            // .ThenInclude(o => o.Customer)
             .Select(s => new Shipment
             {
                 // Explicitly check for null for Order and Customer in the Select
@@ -36,7 +36,7 @@ public class ShipmentRepository : IShipmentRepository
     {
         var shipment = await _db.Shipments
             .Include(s => s.Order)
-            .ThenInclude(o => o.Customer)
+            // .ThenInclude(o => o.Customer)
             .FirstOrDefaultAsync(s => s.ShipmentID == id);
 
         return shipment;  // Return null if shipment is not found
