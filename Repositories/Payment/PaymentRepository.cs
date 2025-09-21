@@ -21,7 +21,7 @@ public class PaymentRepository : IPaymentRepository
     {
         return await _db.Payments
             .Include(p => p.Order)
-            .ThenInclude(o => o.Customer)
+            // .ThenInclude(o => o.Customer)
             .ToListAsync();
     }
 
@@ -29,7 +29,7 @@ public class PaymentRepository : IPaymentRepository
     {
         return await _db.Payments
             .Include(p => p.Order)
-            .ThenInclude(o => o.Customer)
+            // .ThenInclude(o => o.Customer)
             .FirstOrDefaultAsync(p => p.PaymentID == id);
     }
 
@@ -49,11 +49,11 @@ public class PaymentRepository : IPaymentRepository
 
     public async Task UpdateAsync(Payment payment)
     {
-        _db.Payments.Update(payment);
+        await _db.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Payment payment)
     {
-        _db.Payments.Remove(payment);
+        await _db.SaveChangesAsync();
     }
 }
