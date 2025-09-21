@@ -1,103 +1,57 @@
 using Microsoft.EntityFrameworkCore;
+using EcommerceAPI.Models;
+using EcommerceAPI.Configurations;
 
 public class ProductRepository : IProductRepository
 {
-    private readonly ApplicationDBContext _dbCtx;
-    public ProductRepository(ApplicationDBContext dbCtx)
-    {
-        _dbCtx = dbCtx;
-
-    }
-
-    public async Task<Products> AddAsync(Products product)
-    {
-        _dbCtx.Products.Add(product);
-        await _dbCtx.SaveChangesAsync();
-        return product;
-    }
+    private readonly ApplicationDBContext _db;
+    public ProductRepository(ApplicationDBContext db) => _db = db;
 
     public async Task<IEnumerable<Products>> GetAllAsync()
-    {
-        var products = await _dbCtx.Products
-        .Where(p => p.IsActive == true)
-        .Include(p => p.Category)
-        .ToListAsync();
+        => await _db.Products.Include(p => p.Category).ToListAsync();
 
-        return products;
+    public async Task<Products?> GetByIdAsync(int id)
+        => await _db.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.ProductID == id);
+
+    public async Task<Products?> GetByNameAsync(string name)
+        => await _db.Products.FirstOrDefaultAsync(p => p.ProductName == name);
+
+    public async Task AddAsync(Products product)
+        => await _db.Products.AddAsync(product);
+
+    public Task UpdateAsync(Products product)
+    {
+        _db.Products.Update(product);
+        return Task.CompletedTask;
     }
 
-    public async Task<Products?> GetProductAsync(int id)
+    public Task DeleteAsync(Products product)
     {
-        var product = await _dbCtx.Products
-        .Include(p => p.Category)
-        .FirstOrDefaultAsync(p => p.ProductID == id);
-
-        return product;
+        _db.Products.Remove(product);
+        return Task.CompletedTask;
     }
 
-    public async Task<(IEnumerable<Products>, int)> GetFilteredproductSync(FilterDto filter)
-    {
-        var query = _dbCtx.Products
-        .Include(p => p.Category)
-        .AsQueryable();
+    public async Task<IEnumerable<Products>> GetByCategoryAsync(int categoryId)
+        => await _db.Products.Where(p => p.CategoryID == categoryId).ToListAsync();
 
-        // search by ProductName
-        if (!string.IsNullOrEmpty(filter.Name))
-            query = query.Where(p => p.ProductName.Contains(filter.Name));
+    public async Task<IEnumerable<Products>> SearchAsync(string searchTerm)
+        => await _db.Products
+            .Where(p => p.ProductName.Contains(searchTerm))
+            .Include(p => p.Category)
+            .ToListAsync();
 
-        //filter by category name
-        if (!string.IsNullOrEmpty(filter.CategoryName))
-            query = query.Where(p => p.Category != null &&
-            p.Category.CategoryName.Contains(filter.CategoryName));
+    public async Task<bool> ExistsAsync(int id)
+        => await _db.Products.AnyAsync(p => p.ProductID == id);
 
-        //filter by price
-        if (filter.MinPrice.HasValue)
-            query = query.Where(p => p.Price >= filter.MinPrice.Value);
+    public async Task<IEnumerable<Products>> GetActiveProductsAsync()
+        => await _db.Products
+            .Where(p => p.IsActive)
+            .Include(p => p.Category)
+            .ToListAsync();
 
-        if (filter.MinPrice.HasValue)
-            query = query.Where(p => p.Price <= filter.MinPrice.Value);
-
-        //filer by stock
-        if (filter.InStock.HasValue)
-            query = filter.InStock.Value
-            ? query.Where(p => p.Stock > 0)
-            : query.Where(p => p.Stock <= 0);
-
-        //sorting
-        query = filter.SortBy?.ToLower() switch
-        {
-            "price" => filter.Sortorder == "desc"
-            ? query.OrderByDescending(p => p.Price)
-            : query.OrderBy(p => p.Price),
-
-            _ => filter.Sortorder == "desc"
-                ? query.OrderByDescending(p => p.ProductName)
-                : query.OrderBy(p => p.ProductName)
-        };
-
-        //total data
-        var totalData = await query.CountAsync();
-
-        //pagination
-        var products = await query
-        .Skip((filter.PageNumber - 1) * filter.PageSize)
-        .Take(filter.PageSize)
-        .ToListAsync();
-
-        return (products, totalData);
-    }
-
-    public async Task UpdateAsync(Products product)
-    {
-        _dbCtx.Products.Update(product);
-        await _dbCtx.SaveChangesAsync();
-
-    }
-
-    //hard delete
-    public async Task DeleteAsync(Products products)
-    {
-        _dbCtx.Products.Remove(products);
-        await _dbCtx.SaveChangesAsync();
-    }
+    public async Task<IEnumerable<Products>> GetLowStockProductsAsync(int threshold)
+        => await _db.Products
+            .Where(p => p.Stock <= threshold)
+            .Include(p => p.Category)
+            .ToListAsync();
 }

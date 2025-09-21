@@ -1,27 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 
-[ApiController]
-[Route("api/[controller]")]
-public class HelloController : ControllerBase
+namespace EcommerceAPI.Controllers
 {
-    [HttpGet]
-    public IActionResult GetWelcomeMsg()
+    [ApiController]
+    [Route("api/[controller]")]
+    public class HelloController : ControllerBase
     {
-        var response = "Hello world";
-        return Ok(response);
-
-    }
-
-    [HttpGet("status")]
-    public IActionResult GetStatus()
-    {
-        return Ok(new
+        [HttpGet]
+        public IActionResult GetWelcomeMsg()
         {
-            Status = "Healthy",
-            Serice = "E-Commerce API",
-            Uptime = DateTime.Now
-        });
+            var response = "Hello world";
+            return Ok(response);
+
+        }
+
+        [HttpGet("status")]
+        public IActionResult GetStatus()
+        {
+            return Ok(new
+            {
+                Status = "Healthy",
+                Service = "E-Commerce API",
+                Uptime = DateTime.Now
+            });
+        }
     }
-
-
 }

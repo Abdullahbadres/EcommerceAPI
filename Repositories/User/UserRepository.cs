@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using EcommerceAPI.Models;
+using EcommerceAPI.Configurations;
 
-public class UserReposioty : IUserRepository
+public class UserRepository : IUserRepository
 {
     private readonly ApplicationDBContext _db;
-    public UserReposioty(ApplicationDBContext db) => _db = db;
+    public UserRepository(ApplicationDBContext db) => _db = db;
 
     public async Task AddAsync(User user)
             => await _db.Users.AddAsync(user);
@@ -16,13 +18,17 @@ public class UserReposioty : IUserRepository
     }
 
     public async Task<User?> GetByIdAsync(int id)
-            => await _db.Users.Include(u => u.Customer)
+    {
+            return await _db.Users.Include(u => u.Customer)
                 .FirstOrDefaultAsync(u => u.UserID == id);
+    }
 
 
     public async Task<User?> GetByUserNameAsync(string userName)
-        => await _db.Users.Include(u => u.Customer)
+    {
+        return await _db.Users.Include(u => u.Customer)
             .FirstOrDefaultAsync(u => u.UserName == userName);
+    }
 
 
 

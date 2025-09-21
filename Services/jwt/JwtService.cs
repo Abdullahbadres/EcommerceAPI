@@ -2,6 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using EcommerceAPI.Models; // Added missing using statement for User model
+using EcommerceAPI.Services.JWT; // Added missing namespace declaration
 
 public class JwtService : IJwtService
 {
@@ -9,10 +11,9 @@ public class JwtService : IJwtService
     public JwtService(IConfiguration config)
     {
         _config = config;
-
     }
 
-    public string GenerateToke(User userDt)
+    public string GenerateToken(User userDt)
     {
         //baca setting dari appsetting.json
         var secreet = _config["JwtSettings:Secret"];
@@ -39,7 +40,6 @@ public class JwtService : IJwtService
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(exoiredMinutes),
             signingCredentials: cred
-
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);

@@ -21,4 +21,9 @@ public class RedisService : IRedisService
     {
         return await _db.StringGetAsync(key);
     }
+
+    public async Task<string?> GetStringAsync(string v)
+    {
+        return await _db.StringGetAsync(v);
+    }
 }

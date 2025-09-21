@@ -204,3 +204,15 @@ C:\Users\F36\Documents\EcommerceAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authen
 C:\Users\F36\Documents\EcommerceAPI\bin\Debug\net8.0\NRedisStack.dll
 C:\Users\F36\Documents\EcommerceAPI\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
 C:\Users\F36\Documents\EcommerceAPI\bin\Debug\net8.0\StackExchange.Redis.dll
+C:\Users\F36\Documents\EcommerceAPI\obj\Debug\net8.0\EcommerceAPI.sourcelink.json
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.csproj.AssemblyReference.cache
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.AssemblyInfoInputs.cache
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.AssemblyInfo.cs
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.csproj.CoreCompileInputs.cache
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.sourcelink.json
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.dll
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\refint\EcommerceAPI.dll
+C:\Users\F36\Documents\EcommerceAPIIIII\obj\Debug\net8.0\EcommerceAPI.pdb
